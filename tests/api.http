@@ -1,0 +1,12 @@
+### Get all tickets
+GET http://localhost:3000/api/tickets
+
+### Create a new ticket
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+
+{
+  "title": "Cannot log in",
+  "description": "User gets error when trying to log in.",
+  "createdBy": "user@example.com"
+}
