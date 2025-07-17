@@ -17,7 +17,7 @@ mongoose.connect('mongodb+srv://admin:admin@helpdesk-app.expymrb.mongodb.net/?re
 
 app.use('/api/tickets', ticketRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
