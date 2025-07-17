@@ -1,0 +1,16 @@
+# macOS:
+brew install node                 # node & npm
+brew tap mongodb/brew
+brew install mongodb-community@8.0
+brew services start mongodb-community
+
+# Windows:
+Install Node.js (LTS) from nodejs.org
+Set-ExecutionPolicy RemoteSigned (PowerShell, admin)
+Install MongoDB Community via installer
+
+# Project setup (both):
+cd helpdesk-app/server
+npm install express mongoose cors dotenv
+Create .env with PORT & MONGODB_URI
+node index.js

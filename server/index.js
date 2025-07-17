@@ -1,23 +1,26 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
-const ticketRoutes = require('./routes/tickets.js');
+const ticketRoutes = require('./routes/tickets');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://admin:admin@helpdesk-app.expymrb.mongodb.net/?retryWrites=true&w=majority&appName=helpdesk-app', {
-}).then(() => {
-    console.log('MongoDB connected');
-}).catch(err => {
-    console.error('MongoDB connection error:', err);
-});
+// Debug logging
+mongoose.connection
+    .on('connected', () => console.log('Mongoose: connected'))
+    .on('error', (err) => console.error('Mongoose error:', err))
+    .on('disconnected', () => console.log('Mongoose: disconnected'));
+
+mongoose
+    .connect(process.env.MONGODB_URI)
+    .catch(() => { }); // connection events will log
 
 app.use('/api/tickets', ticketRoutes);
+app.use('/api/auth', authRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const PORT = parseInt(process.env.PORT) || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

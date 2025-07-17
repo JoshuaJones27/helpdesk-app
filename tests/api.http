@@ -1,8 +1,8 @@
 ### Get all tickets
-GET http://localhost:5000/api/tickets
+GET http://localhost:3000/api/tickets
 
 ### Create a new ticket
-POST http://localhost:5000/api/tickets
+POST http://localhost:3000/api/tickets
 Content-Type: application/json
 
 {
@@ -10,3 +10,47 @@ Content-Type: application/json
   "description": "User gets error when trying to log in.",
   "createdBy": "user@example.com"
 }
+### Get a ticket by ID
+GET http://localhost:3000/api/tickets/687967da6c97c33526f1f80b
+
+### Update a ticket by ID
+PUT http://localhost:3000/api/tickets/687967da6c97c33526f1f80b
+Content-Type: application/json
+
+{
+  "title": "Cannot log in - Updated",
+  "description": "User gets error when trying to log in - Updated.",
+  "createdBy": "user@example.com"
+}
+
+### Delete a ticket by ID
+DELETE http://localhost:3000/api/tickets/68790e1e5a8c8ebb843f34dc
+
+### Patch ticket status only
+PATCH http://localhost:3000/api/tickets/687967da6c97c33526f1f80b
+Content-Type: application/json
+
+{
+  "status": "in progress"
+}
+
+### Patch multiple fields
+PATCH http://localhost:3000/api/tickets/687967f76c97c33526f1f80f
+Content-Type: application/json
+
+{
+  "assignedTo": "agent@example.com",
+  "description": "User now reports additional error"
+}
+
+### Signup a user
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{ "email":"user@example.com", "password":"s3cret123" }
+
+### Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{ "email":"user@example.com", "password":"s3cret123" }
