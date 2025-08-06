@@ -85,12 +85,23 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth, async (req, res, next) => {
     try {
-        const tickets = await Ticket.find();
-        res.json(tickets);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const [tickets, total] = await Promise.all([
+            Ticket.find().skip(skip).limit(limit),
+            Ticket.countDocuments()
+        ]);
+        res.json({
+            total,
+            page,
+            limit,
+            tickets
+        });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 });
 

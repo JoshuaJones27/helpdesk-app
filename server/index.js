@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const morgan = require('morgan');
 
 const ticketRoutes = require('./routes/tickets');
 const authRoutes = require('./routes/auth');
@@ -85,7 +86,11 @@ app.use(
 app.use(helmet());
 
 // CORS configuration
-app.use(cors());
+const allowedOrigin = process.env.FRONTEND_URL || '*';
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? allowedOrigin : '*',
+    credentials: true
+}));
 app.use(express.json());
 
 //Rate limiting: 100 requests per IP per 15 minutes
@@ -109,6 +114,8 @@ app.use((err, req, res, next) => {
     next(err);
 });
 
+// Logging
+app.use(morgan('dev'));
 
 // Debug logging
 mongoose.connection
@@ -120,8 +127,18 @@ mongoose
     .connect(process.env.MONGODB_URI)
     .catch(() => { }); // connection events will log
 
+// API routes
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/auth', authRoutes);
+
+// Centralized error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(err.status || 500).json({
+        status: err.status || 500,
+        message: err.message || 'Internal Server Error'
+    });
+});
 
 // Fallback for unmatched routes
 app.use((req, res) => {

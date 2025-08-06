@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^",
@@ -13,6 +14,10 @@
     "mongoose": "^"
   },
   "devDependencies": {
-    "nodemon": "^"
+    "nodemon": "^",
+    "jest": "^29.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
